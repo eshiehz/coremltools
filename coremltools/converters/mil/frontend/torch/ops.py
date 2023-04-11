@@ -3563,6 +3563,22 @@ def ones(context, node):
     fill = mb.fill(shape=size, value=1.0, name=node.name)
     context.add(fill)
 
+@register_torch_op
+def new_ones(context, node):
+    inputs = _get_inputs(context, node, expected=7)
+    x = inputs[0]
+    size = inputs[1]
+    # dtype = NUM_TO_TORCH_DTYPE[inputs[2].val] unused
+    # device = inputs[3] unused
+    # requires_grad = inputs[4] unused
+    # layout = inputs[5] unused
+    # pin_memory = inputs[6] unused
+
+    if isinstance(size, list):
+        size = mb.concat(values=size, axis=0)
+
+    fill = mb.fill(shape=size, value=1.0, name=node.name)
+    context.add(fill)
 
 @register_torch_op
 def ones_like(context, node):
